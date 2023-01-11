@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Favourites Page</title>
+    <style>
+      /* All Your css for Favourites page goes here  */
+      body{
+        margin: 0%;
+        padding: 0%;
+        align-items: center;
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+    #fav-container{
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap:10px 5px;
+      width: 90%;
+      margin: auto;
+      text-align: center;
+    }
+
+    button{
+      padding: 10px 25px;
+      color: teal;
+      cursor: pointer;
+      margin: 5px;
+      border: none;
+    }
+
+    .box{
+      border-radius: 4px;
+      padding: 10px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
+
+    @media (max-width:450px){
+      #fav-container{
+      grid-template-columns: repeat(1,1fr);
+      }
+    } 
+
+    @media (max-width:750px) and (min-width:450px){
+      #fav-container{
+      grid-template-columns: repeat(2,1fr);
+    }
+
+    }
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <h1>Masai Restaurant Finder</h1>
+      <a href="./index.html">Home</a>
+      <a href="./favourites.html">Favourites</a>
+    </div>
+    <h1 id="total">Your a total <span id="fav-total">0</span> elements in the favourites</h1>
+    <div id="fav-container">
+      <!-- Here Append All the Favourites-->
+    </div>
+  </body>
+  <script>
+    // All your JS code for Favourites Page goes here
+    let container = document.getElementById("fav-container");
+    let bag= JSON.parse(localStorage.getItem("favourites")) || [] ;  
+    document.getElementById("fav-total").innerHTML=bag.length ;
+    
+    const showRestro=(data)=>{
+   container.innerHTML="";
+      data?.map((e)=>{
+      let box = document.createElement("div");
+      box.setAttribute("class","box");
+      let image = document.createElement("img");
+      let name = document.createElement("h3");
+      let price = document.createElement("p");
+      let rate = document.createElement("p");
+      let type = document.createElement("p");
+      let del = document.createElement("button");
+      del.textContent="Delete";
+      del.addEventListener("click",()=>remove(e))
+      image.src=e.image;
+      name.textContent=e.name;
+      price.textContent=e.price_starts_from;
+      rate.textContent=e.rating;
+      type.textContent=e.type;
+      box.append(image,name,price,type,rate,del);
+    document.getElementById("fav-total").innerHTML=bag.length ;
+
+      container.append(box);  
+
+    })
+    }
+
+    
+    const remove=(e)=>{
+      bag.splice(e,1);
+      localStorage.setItem("favourites",JSON.stringify(bag)); 
+      showRestro(bag);
+    document.getElementById("fav-total").innerHTML=bag.length ;
+
+    }
+    
+    showRestro(bag);
+
+
+  </script>
+</html>
